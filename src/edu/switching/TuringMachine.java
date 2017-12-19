@@ -10,6 +10,7 @@ public class TuringMachine {
     private char[] input;
     private int currentState = 0;
     private int currentIndex = 1;
+    private String currentConfig;
 
     private TuringMachine(String[] alphabet, int nStates) {
         this.alphabet = alphabet;
@@ -33,6 +34,7 @@ public class TuringMachine {
         for (String transition : transitions) {
             String[] tokens = transition.split(",");
             if (Integer.parseInt(tokens[0]) == state && tokens[1].toCharArray()[0] == currentCharacter) {
+                currentConfig = transition;
                 currentState = Integer.parseInt(tokens[2]);
                 input[index - 1] = tokens[3].toCharArray()[0];
                 switch (tokens[4]) {
@@ -99,6 +101,7 @@ public class TuringMachine {
         return input;
     }
 
+    private String getCurrentConfig() { return currentConfig; }
 
     public static void main(String[] args) {
         System.out.println("Enter alphabet (Ex: a,b,#):");
@@ -138,9 +141,11 @@ public class TuringMachine {
 
         int currentIndex = machine.getCurrentIndex();
         int currentState = machine.getCurrentState();
+        String finalConfig = machine.getCurrentConfig();
         String finalString = new String(machine.getInput());
 
         System.out.println("\n\nString is " + (result ? "Accepted" : "Rejected"));
+        System.out.println("Halting Config: " + finalConfig);
         System.out.println("Final State: " + currentState);
         System.out.println("Final Index: " + currentIndex);
         System.out.println("Final String: " + finalString);
